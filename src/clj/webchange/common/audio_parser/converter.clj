@@ -25,7 +25,7 @@
         target-path (if absolute-path? converted-file-path (f/relative->absolute-path converted-file-path))]
     (when-not (f/file-exist? converted-file-path)
       (let [result (sh "ffmpeg" "-i" origin-path target-path)]
-        (if (= (:exit result) 1)
+        (if (not= (:exit result) 0)
           (throw (Exception. (:err result)))
           (when remove-origin?
             (delete-file origin-path)))))
